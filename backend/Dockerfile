@@ -9,6 +9,13 @@ RUN apt-get update && apt-get install -y \
     libssl-dev \
     && rm -rf /var/lib/apt/lists/*
 
+# Install rustup and switch to nightly toolchain (needed for edition2024)
+RUN curl https://sh.rustup.rs -sSf | sh -s -- -y && \
+    /usr/local/cargo/bin/rustup toolchain install nightly && \
+    /usr/local/cargo/bin/rustup default nightly
+
+ENV PATH="/usr/local/cargo/bin:${PATH}"
+
 # Copy manifests
 COPY Cargo.toml ./
 

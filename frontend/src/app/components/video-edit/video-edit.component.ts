@@ -88,7 +88,7 @@ import { Subject, takeUntil } from 'rxjs';
               <div class="info-item">
                 <span class="info-label">Resolutions</span>
                 <span class="info-value">
-                  {{ video.resolutions.map(r => r.name).join(', ') || 'Processing...' }}
+                  {{ getResolutionNames() || 'Processing...' }}
                 </span>
               </div>
             </div>
@@ -405,5 +405,12 @@ export class VideoEditComponent implements OnInit, OnDestroy {
 
     formatDate(dateString: string): string {
         return new Date(dateString).toLocaleString();
+    }
+
+    getResolutionNames(): string {
+        if (!this.video || !this.video.resolutions || this.video.resolutions.length === 0) {
+            return '';
+        }
+        return this.video.resolutions.map(r => r.name).join(', ');
     }
 }

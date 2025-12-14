@@ -146,6 +146,24 @@ resolutions: vec!["360p".to_string(), "720p".to_string(), "1080p".to_string()],
 
 ## 🐛 Troubleshooting
 
+### Build Error: "feature `edition2024` is required"
+
+**Penyebab**: Dependency tertentu memerlukan fitur Cargo `edition2024`, tetapi base image Rust 1.83 tidak mendukungnya.
+
+**Error Original**:
+```
+error: failed to download `base64ct v1.8.1`
+  Caused by: feature `edition2024` is required
+  The package requires the Cargo feature called `edition2024`, but that feature is not stabilized 
+  in this version of Cargo (1.83.0).
+```
+
+**Solusi**:
+- Update `backend/Dockerfile` untuk menggunakan `rust:nightly` (bukan stable 1.83)
+- Nightly Rust toolchain mendukung `edition2024` feature
+- Ubah return type di `main.rs` menjadi `Result<(), Box<dyn std::error::Error + Send + Sync>>` 
+  agar `?` operator berfungsi dengan semua error types
+
 ### Container Issues
 
 ```bash
